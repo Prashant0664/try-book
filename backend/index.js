@@ -17,8 +17,6 @@ app.use(
     credentials: true,
   })
 );
-const url = 'https://jujmanga.net/manga/jujutsu-kaisen-chapter-266/';
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
