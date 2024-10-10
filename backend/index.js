@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
-mongoose.connect(MONGO_URI)
+mongoose.connect(process.env.MONGO)
 app.use("/",Metarouter);
 // Start the server
 app.listen(port, () => {
