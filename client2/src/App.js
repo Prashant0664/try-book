@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/book/:book" element={<Book />} />
-          <Route path="/manga/:manga/:book" element={<Manga />} />
+          <Route path="/manga/:manga" element={<Manga />} />
         </Routes>
       </BrowserRouter>
     </>
