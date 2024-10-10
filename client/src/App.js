@@ -128,7 +128,25 @@ function App() {
     }
   }
   const addchaptergrp = async () => {
+    for(var i=stnumber;i<=chnumber;i++){
+      try {
+        const data=await axios.post(`${process.env.REACT_APP_URL}/addchapterone`,
+        {
+          id: showid,
+          urlpre: chlinkpref,
+          urlnum: chlinknum,
+          urlsuff: chlinksuff,
+          number: i
+        }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    console.log("SUCCESS");
+    return;
     try {
+      
       const data = await axios.post(`${process.env.REACT_APP_URL}/addchaptergrp`,
         {
           id: showid,
