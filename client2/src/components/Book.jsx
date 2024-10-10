@@ -7,6 +7,7 @@ const Book = () => {
     const navigate = useNavigate();
     const [bookchapters, setbookchapters] = useState([]);
     const [coverimg, setcoverimg] = useState("");
+    const [views, setviews] = useState(1);
     const [title, settitle] = useState("");
     const fetchbookchapters = async (id) => {
         try {
@@ -30,6 +31,7 @@ const Book = () => {
             });
             settitle(data.data.title);
             setcoverimg(data.data.img);
+            setviews(data.data.views);
             console.log(arr, "LLLLL");
             setbookchapters(arr);
         } catch (error) {
@@ -44,6 +46,11 @@ const Book = () => {
         <>
             <div className='text-[50px] font-semibold items-center text-center '>
                 {title}
+            </div>
+            <div className=''>
+                <div className='text-[20px] font-semibold items-center text-center '>
+                    Views: {views}
+                </div>
             </div>
             <div className='w-[100%] flex justify-center items-center'>
                 <img src={coverimg} className=' h-[90vh] rounded-md' alt="cover" />

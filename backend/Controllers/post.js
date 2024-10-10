@@ -211,7 +211,9 @@ exports.getallbooks = async (req, res) => {
     try {
         // console.log(req.body.id, "LLL");
         const books = await Book.find({metaid:req.body.id});
-        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid, img:books[0].coverimg, title:books[0].title });
+        books[0].views+=1;
+        books[0].save();
+        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid, img:books[0].coverimg, title:books[0].title, views:books[0].views });
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });
@@ -231,7 +233,22 @@ exports.getallimages=async(req,res)=>{
     try{
         const {id}=req.body;
         const pages=await Pages.find({_id:id});
+        pages[0].views+=1;
+        pages[0].save();
         return res.status(201).json({data:pages});
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).json({ message: error.message });
+    }
+}
+exports.increaseviewmanga=async(req,res)=>{
+    try{
+        const {id}=req.body;
+        const pages=await Pages.find({_id:id});
+        pages[0].views+=1;
+        pages[0].save();
+        return res.status(201).json({data:"success"});
     }
     catch(error){
         console.log(error)
