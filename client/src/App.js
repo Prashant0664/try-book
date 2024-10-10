@@ -128,13 +128,13 @@ function App() {
     }
   }
   const addchaptergrp = async () => {
-    for(var i=stnumber;i<=chnumber;i++){
+    for(var i=Number(stnumber);i<=Number(chnumber);i++){
       try {
         const data=await axios.post(`${process.env.REACT_APP_URL}/addchapterone`,
         {
           id: showid,
           urlpre: chlinkpref,
-          urlnum: chlinknum,
+          urlnum: i,
           urlsuff: chlinksuff,
           number: i
         }
@@ -143,7 +143,7 @@ function App() {
         console.log(error);
       }
     }
-    console.log("SUCCESS");
+    console.log("SUCCESSFULLY LOADED CHAPTER");
     return;
     try {
       
@@ -241,7 +241,7 @@ function App() {
                   console.log(showid);
                 }}
                 className='h-[70px] w-28 text-center overflow-scroll px-1 py-1 font-semibold bg-red-300'
-              >{m.title}jnijn inin jibhj h h h h hi h hi hj</h1>
+              >{m.title}</h1>
 
             </div>
           ))}

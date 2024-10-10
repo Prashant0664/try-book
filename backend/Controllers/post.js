@@ -73,7 +73,8 @@ async function scrapeImages(url, id, num, flag) {
         const newpage = {
             title: dat[0].title + " - " + num,
             pagesid: arr,
-            views: 0
+            views: 0,
+            coverimg:dat[0].coverimg,
         }
         // console.log(newpage);
         // console.log(arr);
@@ -210,7 +211,17 @@ exports.getallbooks = async (req, res) => {
     try {
         // console.log(req.body.id, "LLL");
         const books = await Book.find({metaid:req.body.id});
-        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid });
+        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid, img:books[0].coverimg, title:books[0].title });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: error.message });
+    }
+}
+exports.getonlycimg = async (req, res) => {
+    try {
+        // console.log(req.body.id, "LLL");
+        const books = await Book.find({metaid:req.body.id});
+        return res.status(201).json({ img:books[0].coverimg, title:books[0].title });
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });

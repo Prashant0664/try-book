@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+// const Navivate
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+    const navigate = useNavigate();
     const [search, setSearch] = useState('')
     const [metadata, setmetadata] = useState([]);
     const fetchmetadata = async () => {
         try {
             const data = await axios.get(`${process.env.REACT_APP_URL}/metadata`);
             setmetadata(data.data.data);
+            console.log(data.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -36,7 +40,7 @@ const Home = () => {
             <div className='flex justify-center mt-2 font-bold items-center'>
                 <div className=''>
                     {metadata && metadata.map((item, index) => (
-                        <div className='' key={index}>
+                        <div className='' key={index} onClick={()=>{navigate("/book/"+item._id)}}>
                             <div className=' w-48 h-60 shadow-sm cursor-pointer hover:shadow-lg hover:shadow-blue-200 rounded-xl flex flex-col items-center shadow-blue-300'>
                                 <div className=' w-40 h-40 shadow-sm shadow-blue-300 rounded-xl'>
                                     <img src={item.coverimg} className='rounded-xl' alt={item.title} />

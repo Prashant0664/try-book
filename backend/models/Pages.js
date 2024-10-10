@@ -8,6 +8,10 @@ const Pages = new mongoose.Schema(
             type: String,
             required: true
         },
+        coverimg:{
+            type:String,
+            default:"",
+        },
         pagesid: {
             type:Array,
             default:[],
