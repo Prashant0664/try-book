@@ -19,7 +19,7 @@ exports.fetchmetadata = async (req, res) => {
         const metadata = await Metadata.find();
         return res.status(201).json({ data: metadata });
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
@@ -42,7 +42,7 @@ exports.postmetadata = async (req, res) => {
         const generatebook = await new Book(bookdetails).save();
         return res.status(201).json({ data: "metadata" });
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
@@ -76,7 +76,7 @@ async function scrapeImages(url, id, num, flag) {
             views: 0
         }
         // console.log(newpage);
-        console.log(arr);
+        // console.log(arr);
         const page = await Pages.create(newpage);
         // console.log(id);
         dat[0].bookid.push(page._id);
@@ -85,7 +85,7 @@ async function scrapeImages(url, id, num, flag) {
         // console.log("PAGE UPLOADED SUCCESSFULLY");
         return 1;
     } catch (error) {
-        console.error('Error scraping images:');
+        // console.error('Error scraping images:');
         return 0;
     }
 }
@@ -99,7 +99,7 @@ async function uploadImageToCloudinary(imageUrl, title) {
         return result.secure_url;
         // console.log('Uploaded to Cloudinary:', result.secure_url);
     } catch (error) {
-        console.error('Error uploading to Cloudinary:', error);
+        // console.error('Error uploading to Cloudinary:', error);
     }
 }
 async function scrapehelp(urlpre, urlnum, urlsuff, id, number, flag, stnumber) {
@@ -109,7 +109,7 @@ async function scrapehelp(urlpre, urlnum, urlsuff, id, number, flag, stnumber) {
     // dat[0].save();
     // console.log("CACHE CLEARED", number, id);
     for (var i = stnumber; i <= number; i++) {
-        console.log("GENERATING", i);
+        // console.log("GENERATING", i);
         s = "";
         s += urlpre;
         s += i;
@@ -150,7 +150,7 @@ exports.addchapterone = async (req, res) => {
         }
         return res.status(201).json({ data: "metadata" });
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
