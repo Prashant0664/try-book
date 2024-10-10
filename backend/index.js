@@ -21,8 +21,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
-const MONGO_URI=process.env.MONGO
-console.log(MONGO_URI);
 mongoose.connect(MONGO_URI)
 app.use("/",Metarouter);
 // Start the server
