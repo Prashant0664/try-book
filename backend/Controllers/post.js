@@ -129,6 +129,7 @@ async function scrapehelp(urlpre, urlnum, urlsuff, id, number, flag, stnumber) {
 exports.addchaptergrp = async (req, res) => {
     try {
         const { urlpre, urlnum, urlsuff, number, id, stnumber } = req.body;
+        console.log(urlpre, urlnum, urlsuff, number, id, stnumber);
         scrapehelp(urlpre, urlnum, urlsuff, id, number, 1, stnumber);
         return res.status(201).json({ data: "metadata" });
     } catch (error) {
@@ -207,7 +208,7 @@ exports.uploadcoverimg = async (req, res) => {
 
 exports.getallbooks = async (req, res) => {
     try {
-        console.log(req.body.id, "LLL");
+        // console.log(req.body.id, "LLL");
         const books = await Book.find({metaid:req.body.id});
         return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid });
     } catch (error) {
