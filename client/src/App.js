@@ -3,7 +3,7 @@ import './App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 function App() {
-  
+
   const [link, setlink] = useState("");
   const [newlink, setnewlink] = useState("");
   const [newtitle, setnewtitle] = useState("");
@@ -40,7 +40,7 @@ function App() {
     // return;
     try {
       // Send image to backend
-      const response = await axios.post('http://localhost:3001/uploadcoverimg', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/uploadcoverimg`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -52,7 +52,7 @@ function App() {
   };
   const getallimages = async (id) => {
     try {
-      const data = await axios.post('http://localhost:3001/getallimages',
+      const data = await axios.post(`${process.env.REACT_APP_URL}/getallimages`,
         {
           id: id
         }
@@ -65,7 +65,7 @@ function App() {
   }
   const getallbooks = async () => {
     try {
-      const data = await axios.post('http://localhost:3001/getallbooks',
+      const data = await axios.post(`${process.env.REACT_APP_URL}/getallbooks`,
         {
           id: showid
         }
@@ -77,7 +77,7 @@ function App() {
   }
   const fetchmetadata = async () => {
     try {
-      const data = await axios.get('http://localhost:3001/metadata');
+      const data = await axios.get(`${process.env.REACT_APP_URL}/metadata`);
       setmetadata(data.data.data);
     } catch (error) {
       console.log(error);
@@ -85,7 +85,7 @@ function App() {
   }
   const addlink = async () => {
     try {
-      const data = await axios.post('http://localhost:3001/addmetadata',
+      const data = await axios.post(`${process.env.REACT_APP_URL}/addmetadata`,
         {
           link: newlink,
           title: newtitle
@@ -99,12 +99,12 @@ function App() {
   const fetchbookchapters = async (id) => {
     try {
       console.log(id, "id");
-      // const data = await axios.post('http://localhost:3001/fetchbookchapters',
+      // const data = await axios.post(`${process.env.REACT_APP_URL}/fetchbookchapters',
       //   {
       //     id: id
       //   }
       // );
-      const data = await axios.post(`http://localhost:3001/getallbooks`,
+      const data = await axios.post(`${process.env.REACT_APP_URL}/getallbooks`,
         {
           id: id
         });
@@ -129,7 +129,7 @@ function App() {
   }
   const addchaptergrp = async () => {
     try {
-      const data = await axios.post('http://localhost:3001/addchaptergrp',
+      const data = await axios.post(`${process.env.REACT_APP_URL}/addchaptergrp`,
         {
           id: showid,
           urlpre: chlinkpref,
@@ -147,7 +147,7 @@ function App() {
   const addchapterone = async () => {
     try {
       console.log(chlinknum, chlinkpref, chlinksuff);
-      const data = await axios.post('http://localhost:3001/addchapterone',
+      const data = await axios.post(`${process.env.REACT_APP_URL}/addchapterone`,
         {
           id: showid,
           urlpre: chlinkpref,
