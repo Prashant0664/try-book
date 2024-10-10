@@ -11,7 +11,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(
   cors({
-    origin: [process.env.NODE_ENV === 'production'?process.env.FRONT:"http://localhost:3001", process.env.NODE_ENV === 'production'?process.env.BACK:"http://localhost:3000"],
+    origin: [process.env.NODE_ENV === 'production'?process.env.BACK:"http://localhost:3001", process.env.NODE_ENV === 'production'?process.env.FRONT:"http://localhost:3000"],
     // origin: [keys.REACT_APP_BACKEND_URL, keys.REACT_APP_FRONTEND_URL],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
