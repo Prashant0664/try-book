@@ -9,12 +9,25 @@ const Metarouter=require('./routes/post');
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
+const allowedOrigins = [
+  process.env.NODE_ENV === 'production' ? process.env.BACK : "http://localhost:3001", 
+  process.env.NODE_ENV === 'production' ? process.env.FRONT : "http://localhost:3000",
+  "https://readmangaonline-free.vercel.app"  // Always allow this domain
+];
 app.use(
   cors({
-    origin: [process.env.NODE_ENV === 'production'?process.env.BACK:"http://localhost:3001", process.env.NODE_ENV === 'production'?process.env.FRONT:"http://localhost:3000"],
-    // origin: [keys.REACT_APP_BACKEND_URL, keys.REACT_APP_FRONTEND_URL],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: "GET,POST,PUT,DELETE",
-    credentials: true,
+    credentials: true,  // Allow cookies and other credentials
   })
 );
 app.use((req, res, next) => {
