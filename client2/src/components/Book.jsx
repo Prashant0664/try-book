@@ -61,6 +61,17 @@ const Book = () => {
                 <meta name="author" content="Prashant" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </Helmet>
+            <div className='border-0 border-b-2 border-slate-400 shadow-blue-500 shadow-md h-[4rem] flex justify-between px-10'>
+                <div className=' cursor-pointer' onClick={() => { navigate("/") }}>
+                    <img src={coverimg} className='h-[3.8rem] py-[0.2rem] rounded-md' alt="cover" />
+                </div>
+                {/* Navbar Home button */}
+                <div className='flex justify-center items-center mt-2'>
+                    <div className='bg-blue-500 cursor-pointer hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => { navigate("/") }}>
+                        Home
+                    </div>
+                </div>
+            </div>
             <div className='text-[50px] font-semibold items-center text-center '>
                 {title}
             </div>

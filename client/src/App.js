@@ -112,7 +112,7 @@ function App() {
       for (var i = 0; i < data.data.booknames.length; i++) {
         arr.push({ name: data.data.booknames[i], link: data.data.booklinks[i] });
       }
-      arr.sort(function(x, y) {
+      arr.sort(function (x, y) {
         if (x.name > y.name) {
           return -1;
         }
@@ -121,23 +121,23 @@ function App() {
         }
         return 0;
       });
-      console.log(arr,"LLLLL");
+      console.log(arr, "LLLLL");
       setbookchapters(arr);
     } catch (error) {
       console.log(error);
     }
   }
   const addchaptergrp = async () => {
-    for(var i=Number(stnumber);i<=Number(chnumber);i++){
+    for (var i = Number(stnumber); i <= Number(chnumber); i++) {
       try {
-        const data=await axios.post(`${process.env.REACT_APP_URL}/addchapterone`,
-        {
-          id: showid,
-          urlpre: chlinkpref,
-          urlnum: i,
-          urlsuff: chlinksuff,
-          number: i
-        }
+        const data = await axios.post(`${process.env.REACT_APP_URL}/addchapterone`,
+          {
+            id: showid,
+            urlpre: chlinkpref,
+            urlnum: i,
+            urlsuff: chlinksuff,
+            number: i
+          }
         );
       } catch (error) {
         console.log(error);
@@ -146,18 +146,31 @@ function App() {
     console.log("SUCCESSFULLY LOADED CHAPTER");
     return;
     try {
-      
+
       const data = await axios.post(`${process.env.REACT_APP_URL}/addchaptergrp`,
         {
           id: showid,
           urlpre: chlinkpref,
           urlnum: chlinknum,
           urlsuff: chlinksuff,
-          stnumber:stnumber,
+          stnumber: stnumber,
           number: chnumber
         }
       );
       console.log("SUCCESSFULLY LOADED CHAPTER");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const deletepage = async (id) => {
+    try {
+      const data = await axios.post(`${process.env.REACT_APP_URL}/deletepage`,
+        {
+          id: id,
+          bookid: showid
+        }
+      );
+      console.log("SUCCESSFULLY DELETED PAGE");
     } catch (error) {
       console.log(error);
     }
@@ -305,29 +318,42 @@ function App() {
               <button type="submit" className='border border-black p-1 rounded-xl cursor-pointer hover:bg-white'>Upload Image</button>
             </form>
             <br />
-            <div className=''>
+            <div className='w-[100%]'>
 
               {bookchapters && bookchapters.map((b, index) => (
                 <div className='' key={index}>
-                  <table className='flex border border-black py-1 pl-1 font-semibold cursor-pointer   '>
-                    <tbody>
-                      <tr className='' onClick={() => {setshowm(!showm); setcurrimglink(b.link);getallimages(b.link)}}>
+                  <table className='flex border w-full border-black py-1 pl-1 font-semibold cursor-pointer   '>
+                    <tbody className=''>
+                      <tr className=''
+                      >
                         <td className=''>
                           {index + 1}.&nbsp;  &nbsp;
                         </td>
-                        <td className=''>
-                          <h1>{b.name}</h1>
+                        <td className=''
+                          onClick={() => { setshowm(!showm); setcurrimglink(b.link); getallimages(b.link) }}
+                        >
+                          <h1>{b.name}
+                            &nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;
+                          </h1>
+                        </td>
+                        <td>
+                          <div className='border cursor-pointer border-red-400 bg-red-200' onClick={() => deletepage(b.link)}>
+                            Delete
+                          </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  {showm && allimages && b.link==currimglink && allimages.map((a, ind) => (
+                  {showm && allimages && b.link == currimglink && allimages.map((a, ind) => (
                     <div className='' key={ind}>
                       <img src={a} alt="" />
                     </div>
                   ))}
+
                 </div>
+
               ))}
+
             </div>
           </>
         }

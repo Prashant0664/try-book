@@ -61,7 +61,7 @@ async function scrapeImages(url, id, num, flag) {
 
         var arr = []
         const dat = await Book.find({ metaid: id });
-        var title=dat[0].title;
+        var title = dat[0].title;
         // console.log("STARTING UPLOADING TO CLOUD")
         for (let i = 0; i < images.length; i++) {
             const iurl = await uploadImageToCloudinary(images[i], title);
@@ -74,7 +74,7 @@ async function scrapeImages(url, id, num, flag) {
             title: dat[0].title + " - " + num,
             pagesid: arr,
             views: 0,
-            coverimg:dat[0].coverimg,
+            coverimg: dat[0].coverimg,
         }
         // console.log(newpage);
         // console.log(arr);
@@ -115,12 +115,12 @@ async function scrapehelp(urlpre, urlnum, urlsuff, id, number, flag, stnumber) {
         s += urlpre;
         s += i;
         s += urlsuff;
-        var f=scrapeImages(s, id, i,flag);
+        var f = scrapeImages(s, id, i, flag);
         // console.log(s);
-        if(f){
+        if (f) {
             console.log("GENERATED", i);
         }
-        else{
+        else {
             console.log("NOT FOUND", s);
         }
         // console.log("HERE END", i)
@@ -146,7 +146,7 @@ exports.addchapterone = async (req, res) => {
         s += urlpre;
         s += urlnum;
         s += urlsuff;
-        const f = scrapeImages(s, id, number,0);
+        const f = scrapeImages(s, id, number, 0);
         if (!f) {
             return res.status(500).json({ message: "error" });
         }
@@ -176,26 +176,26 @@ const upload = multer({ storage: storage });
 exports.uploadcoverimg = async (req, res) => {
     try {
         const file = req.file;  // Multer stores the file in req.file
-        const id=req.body.id;
+        const id = req.body.id;
         if (!file) {
             return res.status(400).json({ message: 'No file provided' });
         }
 
         // Upload to Cloudinary
-        const dat=await Book.find({metaid:id});
-        const dat2=await Metadata.find({_id:id});
+        const dat = await Book.find({ metaid: id });
+        const dat2 = await Metadata.find({ _id: id });
         const result = await cloudinary.uploader.upload_stream({ resource_type: "image" }, (error, result) => {
             if (error) {
                 console.error(error);
                 return res.status(500).json({ message: "Image upload failed" });
             }
-            if( dat && dat[0]){
-                dat[0].coverimg=result.secure_url;
+            if (dat && dat[0]) {
+                dat[0].coverimg = result.secure_url;
                 dat[0].save();
-                
+
             }
-            if(dat2 && dat2[0]){
-                dat2[0].coverimg=result.secure_url;
+            if (dat2 && dat2[0]) {
+                dat2[0].coverimg = result.secure_url;
                 dat2[0].save();
             }
             return res.status(201).json({ url: result.secure_url });
@@ -210,10 +210,10 @@ exports.uploadcoverimg = async (req, res) => {
 exports.getallbooks = async (req, res) => {
     try {
         // console.log(req.body.id, "LLL");
-        const books = await Book.find({metaid:req.body.id});
-        books[0].views+=1;
+        const books = await Book.find({ metaid: req.body.id });
+        books[0].views += 1;
         books[0].save();
-        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid, img:books[0].coverimg, title:books[0].title, views:books[0].views });
+        return res.status(201).json({ booknames: books[0].bookname, booklinks: books[0].bookid, img: books[0].coverimg, title: books[0].title, views: books[0].views });
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });
@@ -222,35 +222,87 @@ exports.getallbooks = async (req, res) => {
 exports.getonlycimg = async (req, res) => {
     try {
         // console.log(req.body.id, "LLL");
-        const books = await Book.find({metaid:req.body.id});
-        return res.status(201).json({ img:books[0].coverimg, title:books[0].title });
+        const books = await Book.find({ metaid: req.body.id });
+        return res.status(201).json({ img: books[0].coverimg, title: books[0].title });
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
-exports.getallimages=async(req,res)=>{
-    try{
-        const {id}=req.body;
-        const pages=await Pages.find({_id:id});
-        pages[0].views+=1;
+exports.getallimages = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const pages = await Pages.find({ _id: id });
+        pages[0].views += 1;
         pages[0].save();
-        return res.status(201).json({data:pages});
+        return res.status(201).json({ data: pages });
     }
-    catch(error){
+    catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
-exports.increaseviewmanga=async(req,res)=>{
-    try{
-        const {id}=req.body;
-        const pages=await Pages.find({_id:id});
-        pages[0].views+=1;
+exports.increaseviewmanga = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const pages = await Pages.find({ _id: id });
+        pages[0].views += 1;
         pages[0].save();
-        return res.status(201).json({data:"success"});
+        return res.status(201).json({ data: "success" });
     }
-    catch(error){
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: error.message });
+    }
+}
+function extractPublicId(url) {
+    const parts = url.split('/');
+    const versionIndex = parts.findIndex(part => part.startsWith('v'));
+  
+    // Construct the public ID by joining the path after 'upload/' and before the file extension
+    const publicIdParts = parts.slice(versionIndex + 1); // Skip version
+    const publicIdWithExtension = publicIdParts.join('/'); // Join remaining parts into a full path
+    const publicId = publicIdWithExtension.split('.')[0]; // Remove file extension
+  
+    // Decode any URL-encoded characters (e.g., %20 to space)
+    return decodeURIComponent(publicId);
+  }
+const deleteImageFromCloudinary = async (imageUrl) => {
+    try {
+        const publicId = extractPublicId(imageUrl);
+        const result = await cloudinary.uploader.destroy(publicId);
+
+        if (result.result === 'ok') {
+            return 1;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        return 0;
+    }
+};
+exports.deletepage = async (req, res) => {
+    try {
+        const { id, bookid } = req.body;
+        const images = await Pages.find({ _id: id });
+        for (var i = 0; i < images[0].pagesid.length; i++) {
+            if (images[0].pagesid[i]) {
+                var r = deleteImageFromCloudinary(images[0].pagesid[i]);
+                // console.log(r);
+            }
+        }
+        const data = await Pages.findByIdAndDelete(id);
+        const datapage=await Book.find({metaid:bookid});
+        var idx=datapage[0].bookid.indexOf(id);
+
+        if(idx!=-1){
+            datapage[0].bookid.splice(idx,1);
+            datapage[0].bookname.splice(idx,1);
+            datapage[0].save();
+        }
+
+        return res.status(201).json({ data: "success" });
+    } catch (error) {
         console.log(error)
         return res.status(500).json({ message: error.message });
     }
