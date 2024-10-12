@@ -9,7 +9,7 @@ const Manga = () => {
     const [title, settitle] = useState("");
     const [coverimg, setcoverimg] = useState("");
     const [views, setviews] = useState("");
-    const { manga } = useParams()
+    const { manga, name } = useParams()
     var contenti = "Manga, Comic, Online, Manag Reader, Latest Manga, Manhwa, Manwha, Japan, Web Development, Website, Scrapping, New, Trending Manga, Muse Asia, Latest, Newest, Funniest, MERN, MongoDB ExpessJS, ReactJs, NodeJs, Read Free, Children, #tags, old manga, anime, anime story, online anime, free anime, free manga, cartoon, online free anime, hidden anime, new anime, animes, muse asia anime, youtube anime, youtube cartoon";
     const [metadesc, setmetadesc] = useState("");
 
@@ -25,11 +25,11 @@ const Manga = () => {
             setviews(data.data.data[0].views);
             setallimages(data.data.data[0].pagesid);
             var s = "";
-            s += title + ", ";
-            s += title + ", ";
-            s += title + ", ";
-            s += title + ", ";
-            s += title + ", ";
+            s += name + ",  ";
+            s += name + ", ";
+            s += name + ", ";
+            s += name + ", ";
+            s += name + ", ";
             s += contenti;
             setmetadesc(s);
         } catch (error) {
@@ -37,15 +37,18 @@ const Manga = () => {
         }
     }
     React.useEffect(() => {
-        getallimages(manga)
-    }, [])
+        if(allimages.length===0){
+            getallimages(manga)
+        }
+        // console.log(metadesc);
+    }, [metadesc])
     return (
         <>
             <Helmet>
                 <title>{title}</title>
                 <link rel="icon" href={coverimg} />
                 <meta charset="UTF-8" />
-                <meta name="description" content={metadesc} />
+                <meta name="description" content={metadesc}  data-rh="true" />
                 <meta name="keywords" content={metadesc} />
                 <meta name="author" content="Prashant" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />

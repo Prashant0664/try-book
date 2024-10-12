@@ -36,8 +36,9 @@ const Book = () => {
             // console.log(arr, "LLLLL");
             setbookchapters(arr);
             var s = "";
+            // console.log(title);
             for (var i = 1; i <= 300; i++) {
-                s += title + " " + i + ", ";
+                s += name + " " + i + ", ";
             }
             s += contenti;
             setmetadesc(s);
@@ -46,7 +47,7 @@ const Book = () => {
         }
     }
     var contenti = "Manga, Comic, Online, Manag Reader, Latest Manga, Manhwa, Manwha, Japan, Web Development, Website, Scrapping, New, Trending Manga, Muse Asia, Latest, Newest, Funniest, MERN, MongoDB ExpessJS, ReactJs, NodeJs, Read Free, Children, #tags, old manga, anime, anime story, online anime, free anime, free manga, cartoon, online free anime, hidden anime, new anime, animes, muse asia anime, youtube anime, youtube cartoon";
-    const { book } = useParams()
+    const { book, name } = useParams()
     React.useEffect(() => {
         fetchbookchapters(book);
     }, [])
@@ -87,7 +88,7 @@ const Book = () => {
                 <table className=' w-[80%] justify-center items-center flex border border-black py-1 pl-1 font-semibold cursor-pointer  '>
                     <tbody className='w-[100%] flex flex-col justify-center items-center'>
                         {bookchapters && bookchapters.map((b, index) => (
-                            <tr className='bg-slate-200 px-3 cursor-pointer w-[100%] text-black border border-t-2 border-black py-2 justify-center' onClick={() => { navigate("/manga/" + b.link) }} key={index}>
+                            <tr className='bg-slate-200 px-3 cursor-pointer w-[100%] text-black border border-t-2 border-black py-2 justify-center' onClick={() => { navigate("/manga/"+title+"/" + b.link) }} key={index}>
                                 <td className='max-w-10 min-w-10 bg-slate-200'>
                                     <div className='max-w-10 min-w-10 bg-slate-200'>
                                         {index + 1}.&nbsp;  &nbsp;
